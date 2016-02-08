@@ -10,15 +10,15 @@ CREATE DATABASE gmane DEFAULT CHARACTER SET utf8 ;
 GRANT ALL ON gmane.* TO 'fred'@'localhost' IDENTIFIED BY 'zap';
 GRANT ALL ON gmane.* TO 'fred'@'127.0.0.1' IDENTIFIED BY 'zap';
 
-CREATE TABLE messages (
-    message_id INTEGER NOT NULL,
-    list_id INTEGER,
-    status INTEGER,
-    message TEXT,
-    created_at          TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at          TIMESTAMP NOT NULL DEFAULT 0,
+CREATE TABLE messages2 (
+    message_id       INTEGER NOT NULL AUTO_INCREMENT KEY,
+    message_sha256   CHAR(64) NOT NULL,
+    snippet          TEXT,
+    message          TEXT,
+    sent_at          TIMESTAMP NOT NULL DEFAULT 0,
+    updated_at       TIMESTAMP NOT NULL DEFAULT 0,
 
-   PRIMARY KEY(message_id, list_id)
+    UNIQUE(message_sha256)
 ) ENGINE = InnoDB DEFAULT CHARSET=utf8;
 
 */
