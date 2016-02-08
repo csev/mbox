@@ -32,3 +32,10 @@ the database table and various settings:
         'sakai.devel'
     );
 
+Notes
+-----
+
+On 1and1 - it seems that this ony works with PHP 5.4
+
+	php5.4 gsql.php
+
