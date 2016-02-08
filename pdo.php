@@ -5,12 +5,12 @@ $pdo = new PDO($CFG->pdo, $CFG->dbuser, $CFG->dbpass);
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 /*
-CREATE DATABASE gmane DEFAULT CHARACTER SET utf8 ;
+CREATE DATABASE mbox DEFAULT CHARACTER SET utf8 ;
 
-GRANT ALL ON gmane.* TO 'fred'@'localhost' IDENTIFIED BY 'zap';
-GRANT ALL ON gmane.* TO 'fred'@'127.0.0.1' IDENTIFIED BY 'zap';
+GRANT ALL ON mbox.* TO 'fred'@'localhost' IDENTIFIED BY 'zap';
+GRANT ALL ON mbox.* TO 'fred'@'127.0.0.1' IDENTIFIED BY 'zap';
 
-CREATE TABLE messages2 (
+CREATE TABLE messages (
     message_id       INTEGER NOT NULL AUTO_INCREMENT KEY,
     message_sha256   CHAR(64) NOT NULL,
     snippet          TEXT,

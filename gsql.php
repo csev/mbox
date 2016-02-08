@@ -2,9 +2,11 @@
 require_once "config.php";
 require_once "pdo.php";
 
-$db = new SQLite3('content.sqlite');
+$db = new SQLite3('.data/content.sqlite');
+print "SQLite connected\n";
 
 $results = $db->query('SELECT headers, body, sent_at FROM Messages ORDER BY sent_at');
+print "Query ready\n";
 $count = 0;
 $hlen = 0;
 $blen = 0;
@@ -29,12 +31,10 @@ while ($row = $results->fetchArray()) {
     if ( $CFG->compress ) {
         $insert_text = gzdeflate($text);
     }
-    print "----\n";
-    print $sha256."\n";
-    print $snippet;
+    print "----\n$sha256\n$snippet\n";
     // var_dump($row);
 
-    $stmt = $pdo->prepare('INSERT INTO messages2
+    $stmt = $pdo->prepare('INSERT INTO messages
         (message_sha256, snippet, message, sent_at, updated_at) VALUES
         (:sha, :snip, :mess, :sent, NOW())
         ON DUPLICATE KEY UPDATE updated_at=NOW()');
@@ -44,8 +44,11 @@ while ($row = $results->fetchArray()) {
         ':mess' => $insert_text,
         ':sent' => $send_at)
     );
+    print "$count $sent_at\n";
 
     if ( $count > 2 ) break;
 }
 
-print "$count $hlen $blen\n";
+print "Count=$count Headers=$hlen Bodies=$blen\n";
+
+
