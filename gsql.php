@@ -12,6 +12,7 @@ print "Query ready\n";
 $count = 0;
 $hlen = 0;
 $blen = 0;
+$message_id = 0;
 while ($row = $results->fetchArray()) {
     $count++;
     if ( is_null($row[0]) || is_null($row[1]) || is_null($row[2]) ) {
@@ -40,11 +41,14 @@ while ($row = $results->fetchArray()) {
     // print "----\n$sha256\n$snippet\n";
     // var_dump($row);
 
+    $message_id++;
     $stmt = $pdo->prepare('INSERT INTO messages
-        (message_sha256, snippet, message, sent_at, updated_at) VALUES
-        (:sha, :snip, :mess, :sent, NOW())
-        ON DUPLICATE KEY UPDATE sent_at=:sent, updated_at=NOW()');
+        (message_id, message_sha256, snippet, message, sent_at, updated_at) VALUES
+        (:id, :sha, :snip, :mess, :sent, NOW())
+        ON DUPLICATE KEY UPDATE 
+	message_sha256=:sha,snippet=:snip, message=:mess, sent_at=:sent, updated_at=NOW()');
     $stmt->execute( array(
+        ':id' => $message_id,
         ':sha' => $sha256,
         ':snip' => $snippet,
         ':mess' => $insert_text,
@@ -52,7 +56,7 @@ while ($row = $results->fetchArray()) {
     );
     print "$count $sent_at\n";
 
-    if ( $count > 2 ) break;
+    // if ( $count > 5 ) break;
 }
 
 print "Count=$count Headers=$hlen Bodies=$blen\n";

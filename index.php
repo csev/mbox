@@ -3,7 +3,7 @@ header('Content-Type: text/plain; charset=utf-8');
 
 if ( ! file_exists("config.php") ) { 
     echo("Please see configuration instructions at\n\n");
-    echo("https://github.com/csev/gmane-cache\n\n");
+    echo("https://github.com/csev/mbox\n\n");
     die("Not configured.");
 }
 
@@ -27,7 +27,18 @@ if ( $pos > 0 ) {
 $pieces = explode('/',$local_path);
 
 $n = count($pieces);
-if ( $n < 3 ) {
+
+$first = false;
+if ( $n >= 3 ) {
+	$first = $n - 3;
+
+	$list_id = array_search($pieces[$first],$ALLOWED);
+	if ( $list_id === false ) {
+		$first = false;
+	}
+}
+	
+if ( $first === false ) {
 ?>
 This server contains an email list.
 
@@ -40,7 +51,7 @@ messages can be requested at one time.
 
 There is a copy of this hosted at:
 
-http://gmane.dr-chuck.net/
+http://mbox.dr-chuck.net/
 
 That is served through CloudFlare and so it should provide
 fast access anywhere in the world.
@@ -48,13 +59,7 @@ fast access anywhere in the world.
     exit();
 }
 
-$first = $n - 3;
-
-$list_id = array_search($pieces[$first],$ALLOWED);
-if ( $list_id === false ) {
-    die("Mailing list ".htmlentities($pieces[$first])." not found.");
-}
-
+// Off we go...
 $start = 0+$pieces[$first+1];
 $end = 0+$pieces[$first+2];
 
@@ -70,7 +75,7 @@ $message = $start;
 $debug = array();
 $output = "";
 while ( $message < $end ) {
-    $stmt = $pdo->prepare('SELECT message AS message FROM messages2
+    $stmt = $pdo->prepare('SELECT message AS message FROM messages
         WHERE message_id = :mi');
     $stmt->execute(array( ':mi' => $message) );
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
