@@ -32,10 +32,32 @@ the database table and various settings:
         'sakai.devel'
     );
 
-Notes
------
+Data Loading
+------------
 
-On 1and1 - it seems that this ony works with PHP 5.4
+Copy the content.sqlite file srom somewhere - it is about this size:
 
-	php5.4 gsql.php
+    -rw----r-- 1 root root 887058432 May 15 10:56 content.sqlite
+
+Once config.php is OK, run `gsql.php` from the command line:
+
+    php gsql.php
+	
+You many need to install SQLite 3 for PHP - This worked for me for PHP 7.1:
+
+    apt-get install php7.1-sqlite3
+
+This will fill your database with messages with output that looks as follows:
+
+    php gsql.php 
+    SQLite connected
+    Query ready
+    Skipped null record at 1
+    2 2005-12-08 23:34:30
+    3 2005-12-09 00:58:01
+    4 2005-12-09 09:01:49
+    ...
+    60420 2015-06-01 21:00:33
+    60421 2015-06-01 22:09:17
+    Count=60421 Headers=167907270 Bodies=667841116
 
