@@ -2,6 +2,8 @@
 require_once "config.php";
 require_once "pdo.php";
 
+if (! php_sapi_name() == "cli" ) die('Command line only');
+
 $db = new SQLite3('.data/content.sqlite');
 print "SQLite connected\n";
 // var_dump($db);
