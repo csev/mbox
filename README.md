@@ -35,7 +35,7 @@ the database table and various settings:
 Data Loading
 ------------
 
-Copy the content.sqlite file srom somewhere - it is about this size:
+Copy the content.sqlite file from somewhere - it is about this size:
 
     -rw----r-- 1 root root 887058432 May 15 10:56 content.sqlite
 
