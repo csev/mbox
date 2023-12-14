@@ -16,6 +16,7 @@
 
     RewriteCond %{REQUEST_URI} !=/favicon.ico
     RewriteRule ^ index.php [L]
+    RedirectMatch 404 /\.git
 </IfModule>
 <IfModule !mod_rewrite.c>
     FallbackResource index.php
