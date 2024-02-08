@@ -11,6 +11,8 @@ require_once "config.php";
 require_once "pdo.php";
 require_once "tsugi_util.php";
 
+$CFG->compress = false;
+
 $deflate = function_exists('gzdeflate') && function_exists('gzinflate');
 
 // Make material static for a week
@@ -83,14 +85,15 @@ $message = $start;
 $debug = array();
 $output = "";
 while ( $message < $end ) {
-    $stmt = $pdo->prepare('SELECT message AS message FROM messages
+    $stmt = $pdo->prepare('SELECT message AS message FROM uncompressed
         WHERE message_id = :mi');
     $stmt->execute(array( ':mi' => $message) );
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
+
     // Inflate if necessary
-    if ( $CFG->compress ) {
-        $row['message'] = gzinflate($row['message']);
+    if ( $CFG->compress && is_string($row['message']) && strlen($row['message']) > 0 ) {
+        $row['message'] = gzinflate($row['message'], 0);
     }
 
     $output .= $row['message'] . "\n";

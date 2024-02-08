@@ -19,4 +19,13 @@ CREATE TABLE messages (
     updated_at       TIMESTAMP NOT NULL DEFAULT 0
 ) ENGINE = InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE uncompressed (
+    message_id       INTEGER NOT NULL KEY,
+    message_sha256   CHAR(64) NOT NULL,
+    snippet          TEXT,
+    message          LONGTEXT,
+    sent_at          TIMESTAMP,
+    updated_at       TIMESTAMP
+) ENGINE = InnoDB DEFAULT CHARSET=utf8;
+
 */
